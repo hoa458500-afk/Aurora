@@ -1,0 +1,585 @@
+/*==========================================================
+
+    Aurora 2.0
+    style.css
+    FINAL VERSION
+
+==========================================================*/
+
+/*=============================
+ROOT
+=============================*/
+
+:root{
+
+    --bg:#000;
+
+    --white:#ffffff;
+
+    --overlay:rgba(0,0,0,.28);
+
+    --shadow:rgba(0,0,0,.55);
+
+    --radius:999px;
+
+    --transition:.8s;
+
+}
+
+/*=============================
+RESET
+=============================*/
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html,
+body{
+
+    width:100%;
+
+    height:100%;
+
+    overflow:hidden;
+
+    background:#000;
+
+    font-family:
+    "Be Vietnam Pro",
+    sans-serif;
+
+}
+
+/*=============================
+APP
+=============================*/
+
+#app{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100vw;
+
+    height:100vh;
+
+    overflow:hidden;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:1s;
+
+}
+
+/*=============================
+INTRO
+=============================*/
+
+#intro-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:9999;
+
+    background:#000;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    padding:40px;
+
+}
+
+.intro-content{
+
+    width:min(90%,700px);
+
+}
+
+.moon{
+
+    font-size:60px;
+
+    margin-bottom:30px;
+
+}
+
+.intro-content h1{
+
+    color:#fff;
+
+    font-size:48px;
+
+    font-weight:700;
+
+    margin-bottom:16px;
+
+}
+
+.intro-content p{
+
+    color:#d7d7d7;
+
+    font-size:22px;
+
+    margin-bottom:40px;
+
+    line-height:1.7;
+
+}
+
+#start-btn{
+
+    border:none;
+
+    outline:none;
+
+    cursor:pointer;
+
+    padding:
+
+        18px
+        42px;
+
+    border-radius:999px;
+
+    background:#fff;
+
+    color:#000;
+
+    font-size:18px;
+
+    font-weight:700;
+
+    transition:.35s;
+
+}
+
+#start-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+
+    0 12px 35px rgba(255,255,255,.25);
+
+}
+
+/*=============================
+SCENE CONTAINER
+=============================*/
+
+#scene-container{
+
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+}
+
+/*=============================
+BACKGROUND IMAGE
+=============================*/
+
+#scene-image{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:center;
+
+    transform:scale(1);
+
+    opacity:1;
+
+    transition:
+        opacity 1s ease,
+        transform 8s linear;
+
+    user-select:none;
+
+    -webkit-user-drag:none;
+
+}
+
+/*=============================
+OVERLAY
+=============================*/
+
+#overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+    linear-gradient(
+
+        to top,
+
+        rgba(0,0,0,.55),
+
+        rgba(0,0,0,.20),
+
+        rgba(0,0,0,.05)
+
+    );
+
+    pointer-events:none;
+
+}
+
+/*=============================
+TEXT CONTAINER
+=============================*/
+
+#text-container{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:10%;
+
+    transform:translateX(-50%);
+
+    width:min(90%,900px);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    z-index:100;
+
+}
+
+/*=============================
+MESSAGE
+=============================*/
+
+#message{
+
+    color:var(--white);
+
+    font-size:clamp(24px,2vw,40px);
+
+    font-weight:500;
+
+    line-height:1.8;
+
+    letter-spacing:.4px;
+
+    opacity:0;
+
+    transition:opacity .8s ease;
+
+    text-shadow:
+
+        0 4px 20px rgba(0,0,0,.75);
+
+    white-space:pre-line;
+
+    max-width:900px;
+
+}
+
+/*=============================
+ENDING SCREEN
+=============================*/
+
+#ending-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    background:#000;
+
+    color:#fff;
+
+    z-index:9998;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:opacity 1s ease;
+
+    padding:40px;
+
+}
+
+.ending-content{
+
+    width:min(90%,800px);
+
+}
+
+.ending-content h2{
+
+    font-size:clamp(28px,3vw,52px);
+
+    font-weight:600;
+
+    line-height:1.8;
+
+    text-shadow:
+
+        0 5px 25px rgba(0,0,0,.7);
+
+}
+
+/*=============================
+FADE CLASSES
+=============================*/
+
+.fade-in{
+
+    opacity:1 !important;
+
+    visibility:visible !important;
+
+}
+
+.fade-out{
+
+    opacity:0 !important;
+
+    visibility:hidden !important;
+
+}
+
+/*=============================
+BUTTON ACTIVE
+=============================*/
+
+#start-btn:active{
+
+    transform:scale(.97);
+
+}
+
+/*=============================
+IMAGE ANIMATION
+=============================*/
+
+.zoom{
+
+    transform:scale(1.05);
+
+}
+
+/*=============================
+TEXT ANIMATION
+=============================*/
+
+.show-text{
+
+    opacity:1 !important;
+
+}
+
+.hide-text{
+
+    opacity:0 !important;
+
+}
+
+/*=============================
+SMOOTH TRANSITIONS
+=============================*/
+
+#scene-image,
+#message,
+#intro-screen,
+#ending-screen,
+#app{
+
+    transition:
+
+        opacity .8s ease,
+
+        transform 8s linear,
+
+        visibility .8s ease;
+
+}
+
+/*==================================================
+  RESPONSIVE
+==================================================*/
+
+@media (max-width:1024px){
+
+    .intro-content h1{
+        font-size:42px;
+    }
+
+    .intro-content p{
+        font-size:20px;
+    }
+
+    #message{
+        font-size:30px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .moon{
+        font-size:48px;
+        margin-bottom:24px;
+    }
+
+    .intro-content h1{
+        font-size:34px;
+    }
+
+    .intro-content p{
+        font-size:18px;
+        margin-bottom:32px;
+    }
+
+    #start-btn{
+
+        width:220px;
+
+        padding:16px 0;
+
+        font-size:17px;
+
+    }
+
+    #text-container{
+
+        width:88%;
+
+        bottom:9%;
+
+    }
+
+    #message{
+
+        font-size:22px;
+
+        line-height:1.8;
+
+    }
+
+}
+
+@media (max-width:480px){
+
+    .intro-content h1{
+
+        font-size:28px;
+
+    }
+
+    .intro-content p{
+
+        font-size:16px;
+
+    }
+
+    #start-btn{
+
+        width:200px;
+
+        font-size:16px;
+
+    }
+
+    #message{
+
+        font-size:20px;
+
+    }
+
+}
+
+/*==================================================
+  SCROLLBAR
+==================================================*/
+
+::-webkit-scrollbar{
+
+    width:0;
+
+    height:0;
+
+}
+
+/*==================================================
+  SELECTION
+==================================================*/
+
+::selection{
+
+    background:rgba(255,255,255,.2);
+
+    color:#fff;
+
+}
+
+/*==================================================
+  FINAL
+==================================================*/
+
+body{
+
+    -webkit-font-smoothing:antialiased;
+
+    -moz-osx-font-smoothing:grayscale;
+
+    text-rendering:optimizeLegibility;
+
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+}
