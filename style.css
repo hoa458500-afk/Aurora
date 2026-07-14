@@ -224,6 +224,8 @@ SCENE IMAGE
 
     inset:0;
 
+    z-index:1;
+
     width:100%;
 
     height:100%;
@@ -268,18 +270,20 @@ OVERLAY
 
     inset:0;
 
+    z-index:2;
+
     background:
 
+     radial-gradient(
+        circle,
+        rgba(0,0,0,0) 45%,
+        rgba(0,0,0,.22) 100%
+    ),
     linear-gradient(
-
         to top,
-
         rgba(0,0,0,.55),
-
         rgba(0,0,0,.20),
-
         rgba(0,0,0,.05)
-
     );
 
     pointer-events:none;
@@ -434,7 +438,11 @@ IMAGE ANIMATION
 
 .zoom{
 
-    transform:scale(1.05);
+    transform:scale(1.02);
+
+    transform-origin:center center;
+
+    will-change:transform;
 
 }
 
@@ -466,9 +474,9 @@ SMOOTH TRANSITIONS
 
     transition:
 
-        opacity .8s ease,
+        opacity 1s ease,
 
-        transform 8s linear,
+        transform 30s linear,
 
         visibility .8s ease;
 

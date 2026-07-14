@@ -38,11 +38,19 @@ const state = {
 
     currentScene: -1,
 
-    animationId: null
+    activeScene: "A",
+
+    animationId: null,
+
+    typing: false,
+
+    typingTimer: null,
+
+    typingSpeed: 30,
+
+    fullText: ""
 
 };
-
-console.log("Aurora Ready");
 
 /*==================================================
     MESSAGE DATA
@@ -56,13 +64,28 @@ const messages = [
     },
 
     {
-        time: 4,
+        time: 3,
         text: "Ngồi nghỉ một chút nghen."
     },
 
     {
-        time: 8,
+        time: 6,
         text: "Có những ngày,\nchỉ cần cho mình vài phút ngồi yên\ncũng đã là đủ rồi."
+    },
+
+    {
+        time: 12,
+        text: "Không sao nếu hôm nay bà chưa ổn.\n\nMọi chuyện rồi sẽ có cách của nó,\nvà biết đâu ngày mai sẽ dịu dàng hơn hôm nay."
+    },
+
+    {
+        time: 22,
+        text: "Chúc bà luôn bình an\nvà ngủ thật ngon."
+    },
+
+    {
+        time: 26,
+        text: "Lúc nào thấy mệt,\nghé vào đây một chút cũng được. 🤍"
     }
 
 ];
@@ -79,13 +102,23 @@ const scenes = [
     },
 
     {
-        time: 15,
+        time: 6,
         image: "assets/images/scene2.png"
     },
 
     {
-        time: 27,
+        time: 12,
         image: "assets/images/scene3.png"
+    },
+
+    {
+        time: 22,
+        image: "assets/images/scene4.png"
+    },
+
+    {
+        time: 26,
+        image: "assets/images/scene5.png"
     }
 
 ];
@@ -108,11 +141,31 @@ function startAurora() {
 
     // Phát nhạc
     bgm.currentTime = 0;
-    bgm.volume = 0.35;
 
-    bgm.play().catch(() => {
-        console.log("Trình duyệt yêu cầu tương tác trước khi phát nhạc.");
-    });
+bgm.volume = 0;
+
+bgm.play().catch(() => {
+    
+
+    // Ignore autoplay restriction
+
+});
+
+const fadeIn = setInterval(() => {
+
+    if (bgm.volume < 0.25) {
+
+        bgm.volume += 0.01;
+
+    } else {
+
+        bgm.volume = 0.25;
+
+        clearInterval(fadeIn);
+
+    }
+
+}, 80);
 
     // Khóa nút
     startButton.disabled = true;
@@ -139,21 +192,64 @@ function updateMessage(elapsed) {
 
             state.currentMessage = i;
 
-            message.classList.remove("show-text");
+           message.classList.remove("show-text");
 
-            setTimeout(() => {
+           setTimeout(() => {
 
-                message.textContent = messages[i].text;
+           message.classList.add("show-text");
 
-                message.classList.add("show-text");
+           typeWriter(messages[i].text);
 
-            }, 200);
+           }, 200);
 
             return;
 
         }
 
     }
+
+}
+
+/*==================================================
+    TYPEWRITER ENGINE
+==================================================*/
+
+function typeWriter(text) {
+
+    // Nếu đang gõ thì dừng
+    if (state.typingTimer) {
+
+    clearInterval(state.typingTimer);
+
+    state.typingTimer = null;
+
+}
+
+    state.typing = true;
+
+    state.fullText = text;
+
+    message.textContent = "";
+
+    let index = 0;
+
+    state.typingTimer = setInterval(() => {
+
+        message.textContent += text.charAt(index);
+
+        index++;
+
+        if (index >= text.length) {
+
+            clearInterval(state.typingTimer);
+
+state.typingTimer = null;
+
+state.typing = false;
+
+        }
+
+    }, state.typingSpeed);
 
 }
 
@@ -175,7 +271,34 @@ function updateScene(elapsed) {
 
             state.currentScene = i;
 
-            sceneImageA.src = scenes[i].image;
+            const currentImage =
+                state.activeScene === "A"
+                    ? sceneImageA
+                    : sceneImageB;
+
+            const nextImage =
+                state.activeScene === "A"
+                    ? sceneImageB
+                    : sceneImageA;
+
+            nextImage.src = scenes[i].image;
+
+            nextImage.classList.remove("zoom");
+
+            requestAnimationFrame(() => {
+
+    nextImage.classList.add("zoom");
+
+});
+
+            nextImage.classList.add("active");
+
+            currentImage.classList.remove("active");
+
+            state.activeScene =
+                state.activeScene === "A"
+                    ? "B"
+                    : "A";
 
             return;
 
