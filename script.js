@@ -381,6 +381,28 @@ state.animationId = requestAnimationFrame(loop);
 }
 
 /*==================================================
+    ORIENTATION
+==================================================*/
+
+function checkOrientation() {
+
+    const isMobile = window.innerWidth <= 768;
+
+    const isPortrait = window.innerHeight > window.innerWidth;
+
+    if (isMobile && isPortrait) {
+
+        rotateOverlay.classList.add("rotate-show");
+
+    } else {
+
+        rotateOverlay.classList.remove("rotate-show");
+        
+    }
+
+}
+
+/*==================================================
     EVENTS
 ==================================================*/
 

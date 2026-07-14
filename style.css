@@ -621,3 +621,106 @@ img{
     max-width:100%;
 
 }
+
+/*======================================
+ROTATE OVERLAY
+======================================*/
+
+#rotate-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#000;
+
+    z-index:99999;
+
+    color:#fff;
+
+    text-align:center;
+
+    padding:30px;
+
+    opacity:0;
+visibility:hidden;
+transition:opacity .5s ease;
+
+}
+
+.rotate-box{
+
+    max-width:420px;
+
+}
+
+.rotate-icon{
+
+    font-size:72px;
+
+    margin-bottom:28px;
+
+    animation:rotatePhone 2s infinite ease-in-out;
+
+}
+
+.rotate-box h2{
+
+    font-size:34px;
+
+    margin-bottom:18px;
+
+    font-weight:600;
+
+}
+
+.rotate-box p{
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    color:#d8d8d8;
+
+}
+
+@keyframes rotatePhone{
+
+    0%{
+
+        transform:rotate(0deg);
+
+    }
+
+    40%{
+
+        transform:rotate(90deg);
+
+    }
+
+    60%{
+
+        transform:rotate(90deg);
+
+    }
+
+    100%{
+
+        transform:rotate(0deg);
+
+    }
+
+}
+
+.rotate-show{
+
+    opacity:1;
+    visibility:visible;
+
+}
