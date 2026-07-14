@@ -1,53 +1,32 @@
-/*==========================================================
-    Aurora 2.0
-    Production Edition
-==========================================================*/
-
 "use strict";
 
-/*==========================================================
-    CONFIG
-==========================================================*/
+/*==================================================
+    AURORA v2.0 STABLE
+==================================================*/
 
-const CONFIG = Object.freeze({
-
-    fadeDuration: 800,
-
-    textDelay: 300,
-
-    musicVolume: 0.35,
-
-    totalDuration: 30
-
-});
-
-/*==========================================================
+/*==================================================
     DOM
-==========================================================*/
+==================================================*/
 
-const DOM = Object.freeze({
+const introScreen = document.getElementById("intro-screen");
+const app = document.getElementById("app");
 
-    intro: document.getElementById("intro-screen"),
+const startButton = document.getElementById("start-btn");
 
-    app: document.getElementById("app"),
+const message = document.getElementById("message");
 
-    ending: document.getElementById("ending-screen"),
+const sceneImageA = document.getElementById("scene-image-a");
+const sceneImageB = document.getElementById("scene-image-b");
 
-    startButton: document.getElementById("start-btn"),
+const endingScreen = document.getElementById("ending-screen");
 
-    scene: document.getElementById("scene-image"),
+const bgm = document.getElementById("bgm");
 
-    message: document.getElementById("message"),
-
-    audio: document.getElementById("bgm")
-
-});
-
-/*==========================================================
+/*==================================================
     STATE
-==========================================================*/
+==================================================*/
 
-const STATE = {
+const state = {
 
     started: false,
 
@@ -55,94 +34,231 @@ const STATE = {
 
     startTime: 0,
 
-    currentIndex: -1,
+    currentMessage: -1,
+
+    currentScene: -1,
 
     animationId: null
 
 };
 
-/*==========================================================
-    SCENES
-==========================================================*/
+console.log("Aurora Ready");
 
-const SCENES = Object.freeze({
+/*==================================================
+    MESSAGE DATA
+==================================================*/
 
-    scene1: "assets/images/scene1.png",
-
-    scene2: "assets/images/scene2.png",
-
-    scene3: "assets/images/scene3.png"
-
-});
-
-/*==========================================================
-    TIMELINE
-==========================================================*/
-
-const TIMELINE = Object.freeze([
+const messages = [
 
     {
-
         time: 0,
-
-        scene: "scene1",
-
         text: "Hôm nay chắc cũng mệt ha..."
-
     },
 
     {
-
         time: 4,
-
-        scene: "scene1",
-
         text: "Ngồi nghỉ một chút nghen."
-
     },
 
     {
-
         time: 8,
-
-        scene: "scene1",
-
         text: "Có những ngày,\nchỉ cần cho mình vài phút ngồi yên\ncũng đã là đủ rồi."
+    }
 
+];
+
+/*==================================================
+    SCENE DATA
+==================================================*/
+
+const scenes = [
+
+    {
+        time: 0,
+        image: "assets/images/scene1.png"
     },
 
     {
-
         time: 15,
-
-        scene: "scene2",
-
-        text: "Không sao nếu hôm nay bà chưa ổn.\nMọi chuyện rồi sẽ có cách của nó."
-
+        image: "assets/images/scene2.png"
     },
 
     {
-
-        time: 22,
-
-        scene: "scene2",
-
-        text: "Biết đâu ngày mai\nsẽ dịu dàng hơn hôm nay."
-
-    },
-
-    {
-
         time: 27,
+        image: "assets/images/scene3.png"
+    }
 
-        scene: "scene3",
+];
 
-        text: "Chúc bà luôn bình an\nvà ngủ thật ngon.\n🤍"
+/*==================================================
+    START ENGINE
+==================================================*/
+
+function startAurora() {
+
+    if (state.started) return;
+
+    state.started = true;
+
+    // Ẩn Intro
+    introScreen.classList.add("fade-out");
+
+    // Hiện App
+    app.classList.add("fade-in");
+
+    // Phát nhạc
+    bgm.currentTime = 0;
+    bgm.volume = 0.35;
+
+    bgm.play().catch(() => {
+        console.log("Trình duyệt yêu cầu tương tác trước khi phát nhạc.");
+    });
+
+    // Khóa nút
+    startButton.disabled = true;
+    startButton.style.pointerEvents = "none";
+    requestAnimationFrame(loop);
+
+}
+
+/*==================================================
+    MESSAGE ENGINE
+==================================================*/
+
+function updateMessage(elapsed) {
+
+    for (let i = messages.length - 1; i >= 0; i--) {
+
+        if (elapsed >= messages[i].time) {
+
+            if (state.currentMessage === i) {
+
+                return;
+
+            }
+
+            state.currentMessage = i;
+
+            message.classList.remove("show-text");
+
+            setTimeout(() => {
+
+                message.textContent = messages[i].text;
+
+                message.classList.add("show-text");
+
+            }, 200);
+
+            return;
+
+        }
 
     }
 
-]);
+}
 
-/*==========================================================
-    END OF PART 1
-==========================================================*/
+/*==================================================
+    SCENE ENGINE
+==================================================*/
+
+function updateScene(elapsed) {
+
+    for (let i = scenes.length - 1; i >= 0; i--) {
+
+        if (elapsed >= scenes[i].time) {
+
+            if (state.currentScene === i) {
+
+                return;
+
+            }
+
+            state.currentScene = i;
+
+            sceneImageA.src = scenes[i].image;
+
+            return;
+
+        }
+
+    }
+
+}
+
+/*==================================================
+    ENDING ENGINE
+==================================================*/
+
+function finishAurora() {
+
+    if (state.finished) return;
+
+    state.finished = true;
+
+    // Ẩn dòng chữ
+    message.classList.remove("show-text");
+
+    // Hiện màn hình kết
+    endingScreen.classList.add("fade-in");
+
+    // Dừng vòng lặp
+    if (state.animationId) {
+        cancelAnimationFrame(state.animationId);
+    }
+
+    // Fade nhạc
+    const fade = setInterval(() => {
+
+        if (bgm.volume > 0.02) {
+
+            bgm.volume -= 0.02;
+
+        } else {
+
+            clearInterval(fade);
+
+            bgm.pause();
+
+            bgm.currentTime = 0;
+
+        }
+
+    }, 100);
+
+}
+
+/*==================================================
+    LOOP
+==================================================*/
+
+function loop(timestamp) {
+
+    if (!state.startTime) {
+
+        state.startTime = timestamp;
+
+    }
+
+    const elapsed = (timestamp - state.startTime) / 1000;
+
+    updateMessage(elapsed);
+
+updateScene(elapsed);
+
+if (elapsed >= 30) {
+
+    finishAurora();
+
+    return;
+
+}
+
+state.animationId = requestAnimationFrame(loop);
+
+}
+
+/*==================================================
+    EVENTS
+==================================================*/
+
+startButton.addEventListener("click", startAurora);

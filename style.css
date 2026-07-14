@@ -200,7 +200,25 @@ SCENE CONTAINER
 BACKGROUND IMAGE
 =============================*/
 
-#scene-image{
+/*=============================
+SCENE STAGE
+=============================*/
+
+#scene-stage{
+
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+
+}
+
+/*=============================
+SCENE IMAGE
+=============================*/
+
+.scene-image{
 
     position:absolute;
 
@@ -214,17 +232,29 @@ BACKGROUND IMAGE
 
     object-position:center;
 
+    opacity:0;
+
     transform:scale(1);
 
-    opacity:1;
-
     transition:
-        opacity 1s ease,
+
+        opacity 1.2s ease,
+
         transform 8s linear;
 
     user-select:none;
 
     -webkit-user-drag:none;
+
+}
+
+/*=============================
+ACTIVE SCENE
+=============================*/
+
+.scene-image.active{
+
+    opacity:1;
 
 }
 
@@ -428,7 +458,7 @@ TEXT ANIMATION
 SMOOTH TRANSITIONS
 =============================*/
 
-#scene-image,
+.scene-image,
 #message,
 #intro-screen,
 #ending-screen,
