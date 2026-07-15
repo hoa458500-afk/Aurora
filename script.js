@@ -124,6 +124,48 @@ const scenes = [
 ];
 
 /*==================================================
+    PRELOAD IMAGES
+==================================================*/
+
+const preloadedImages = [];
+
+function preloadScenes() {
+
+    return Promise.all(
+
+        scenes.map(scene => {
+
+            return new Promise(resolve => {
+
+                const img = new Image();
+
+                img.onload = () => {
+
+                    preloadedImages.push(img);
+
+                    resolve();
+
+                };
+
+                img.onerror = () => {
+
+                    console.warn("Không tải được:", scene.image);
+
+                    resolve();
+
+                };
+
+                img.src = scene.image;
+
+            });
+
+        })
+
+    );
+
+}
+
+/*==================================================
     START ENGINE
 ==================================================*/
 
@@ -281,24 +323,32 @@ function updateScene(elapsed) {
                     ? sceneImageB
                     : sceneImageA;
 
-            nextImage.src = scenes[i].image;
+           const img = new Image();
 
-            nextImage.classList.remove("zoom");
+img.onload = () => {
 
-            requestAnimationFrame(() => {
+    nextImage.src = img.src;
 
-    nextImage.classList.add("zoom");
+    nextImage.classList.remove("zoom");
 
-});
+    requestAnimationFrame(() => {
 
-            nextImage.classList.add("active");
+        nextImage.classList.add("zoom");
 
-            currentImage.classList.remove("active");
+    });
 
-            state.activeScene =
-                state.activeScene === "A"
-                    ? "B"
-                    : "A";
+    nextImage.classList.add("active");
+
+    currentImage.classList.remove("active");
+
+    state.activeScene =
+        state.activeScene === "A"
+            ? "B"
+            : "A";
+
+};
+
+img.src = scenes[i].image;
 
             return;
 
